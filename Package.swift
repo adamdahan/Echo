@@ -15,7 +15,7 @@ let package = Package(
     ],
     dependencies: [
         .package(
-            url: "https://github.com/madeofmoney/EchoHTTP.git",
+            url: "https://github.com/moneyclip-io/EchoHTTP.git",
             from: "1.0.0"
         ),
         .package(url: "https://github.com/RobertoMachorro/Highlightr.git", .branch("master"))
