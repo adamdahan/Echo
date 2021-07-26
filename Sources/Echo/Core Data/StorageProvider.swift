@@ -9,8 +9,13 @@ import CoreData
 import UIKit
 
 @available(iOS 10.0, *)
-public class StorageProvider {
+public final class StorageProvider {
     
+    /// Hide the initializer to prevent clients from instantiating this
+    /// object directly.
+    private init() { }
+
+    /// Singleton dispatch
     public static let main = StorageProvider()
     
     public static var persistentContainer: NSPersistentContainer = {
@@ -32,11 +37,6 @@ public class StorageProvider {
         
         return persistentContainer
     }()
-    
-    public init() {
-        
-
-    }
     
     public func getAllLogs() -> [Log] {
         let fetchRequest: NSFetchRequest<Log> = Log.fetchRequest()
