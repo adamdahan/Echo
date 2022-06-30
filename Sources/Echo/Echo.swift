@@ -62,12 +62,7 @@ public class Echo: ObservableObject {
         /// Get the keywindow from the connectedScenes whose activation state is in the foreground
         
         guard
-            let keyWindow = UIApplication.shared.connectedScenes
-                    .filter({$0.activationState == .foregroundActive})
-                    .map({$0 as? UIWindowScene})
-                    .compactMap({$0})
-                    .first?.windows
-                    .filter({$0.isKeyWindow}).first,
+            let keyWindow = UIApplication.keyWindow,
             let rootViewController = keyWindow.rootViewController
         else {
             return
@@ -85,8 +80,11 @@ public class Echo: ObservableObject {
         )
     }
     
-    public class func showBubble() {
-        Echo.main.floatingButton.show()
+    public class func showBanner() {
+        let button = UIButton(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 40))
+        button.backgroundColor = .systemPink
+        button.addTarget(self, action: #selector(show), for: .touchUpInside)
+        UIApplication.keyWindow?.rootViewController?.view.addSubview(button)
     }
 
     // MARK: - Private Setup

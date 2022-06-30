@@ -57,6 +57,7 @@ public class FloatingView {
 	public init(with view: UIView , layer:CGFloat = 1) {
         
         self.floatingView = view
+        
 		self.appWindow = UIApplication.keyWindow
 		self.floatingWindow = FloatingWindow(frame: view.frame)
         self.floatingWindow?.topView = view

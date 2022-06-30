@@ -32,7 +32,7 @@ public extension UIViewController {
     
     override func motionBegan(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
         if #available(iOS 14.0, *) {
-            Echo.showBubble()
+            Echo.showBanner()
         } else {
             // Fallback on earlier versions
         }
