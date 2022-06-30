@@ -3,7 +3,7 @@
     "pins": [
       {
         "package": "EchoHTTP",
-        "repositoryURL": "https://github.com/moneyclip-io/EchoHTTP.git",
+        "repositoryURL": "https://github.com/adamdahan/EchoHTTP.git",
         "state": {
           "branch": null,
           "revision": "352bca3dbc3f086211d6e70002d0f24445033f01",

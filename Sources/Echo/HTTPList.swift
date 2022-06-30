@@ -22,6 +22,8 @@ public class Delegate: NSObject, BagelCarrierDelegate, ObservableObject {
     }
 }
 
+// Testing
+
 
 @available(iOS 14.0, *)
 struct HTTPList: View {
