@@ -8,14 +8,14 @@ import PackageDescription
 let package = Package(
     name: "Echo",
     platforms: [
-        .iOS(.v13),
+        .iOS(.v14),
     ],
     products: [
         .library(name: "Echo", targets: ["Echo"])
     ],
     dependencies: [
         .package(
-            url: "https://github.com/moneyclip-io/EchoHTTP.git",
+            url: "https://github.com/adamdahan/EchoHTTP.git",
             from: "1.0.0"
         ),
         .package(url: "https://github.com/RobertoMachorro/Highlightr.git", .branch("master"))
