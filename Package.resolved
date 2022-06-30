@@ -5,9 +5,9 @@
         "package": "EchoHTTP",
         "repositoryURL": "https://github.com/adamdahan/EchoHTTP.git",
         "state": {
-          "branch": null,
+          "branch": "master",
           "revision": "352bca3dbc3f086211d6e70002d0f24445033f01",
-          "version": "1.0.0"
+          "version": null
         }
       },
       {

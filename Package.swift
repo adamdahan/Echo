@@ -14,10 +14,7 @@ let package = Package(
         .library(name: "Echo", targets: ["Echo"])
     ],
     dependencies: [
-        .package(
-            url: "https://github.com/adamdahan/EchoHTTP.git",
-            from: "1.0.0"
-        ),
+        .package(url: "https://github.com/adamdahan/EchoHTTP.git", .branch("master")),
         .package(url: "https://github.com/RobertoMachorro/Highlightr.git", .branch("master"))
     ],
     targets: [
