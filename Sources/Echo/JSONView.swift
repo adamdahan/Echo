@@ -16,7 +16,7 @@ enum DataType {
 struct JSONView: View {
     
     let type: DataType
-    let packet: BagelRequestPacket
+    let packet: BagelRequestPacket?
     
     private let highlightr = Highlightr()
     
@@ -34,8 +34,12 @@ struct JSONView: View {
                 switch type {
                 case .requestHeaders:
                     
+                    guard let p = packet, let requestInfo = p.requestInfo else  {
+                        return
+                    }
+                    
                     let prettyJsonData = try? JSONSerialization.data(
-                        withJSONObject: packet.requestInfo.requestHeaders ?? Data(),
+                        withJSONObject: requestInfo.requestHeaders ?? Data(),
                         options: .prettyPrinted
                     )
                     
@@ -45,12 +49,15 @@ struct JSONView: View {
                     // You can omit the second parameter to use automatic language detection.
                     let highlightedCode = highlightr?.highlight(jsonString, as: "json") ?? NSAttributedString(string: "")
                     self.text = highlightedCode
-                    break
                     
                 case .responseHeaders:
                     
+                    guard let p = packet, let requestInfo = p.requestInfo, let responseHeaders = requestInfo.responseHeaders else  {
+                        return
+                    }
+                    
                     let prettyJsonData = try? JSONSerialization.data(
-                        withJSONObject: packet.requestInfo.responseHeaders ?? Data(),
+                        withJSONObject: responseHeaders,
                         options: .prettyPrinted
                     )
                     
@@ -60,9 +67,14 @@ struct JSONView: View {
                     // You can omit the second parameter to use automatic language detection.
                     let highlightedCode = highlightr?.highlight(jsonString, as: "json") ?? NSAttributedString(string: "")
                     self.text = highlightedCode
-                    break
+
                 case .response:
-                    if let d = packet.requestInfo.responseData {
+                    
+                    guard let p = packet, let requestInfo = p.requestInfo else  {
+                        return
+                    }
+                    
+                    if let d = requestInfo.responseData {
                         
                         //2. convert JSON data to JSON object
                         let json = try? JSONSerialization.jsonObject(with: d, options: [])
@@ -78,7 +90,6 @@ struct JSONView: View {
                         let highlightedCode = highlightr?.highlight(jsonString, as: "json") ?? NSAttributedString(string: "")
                         self.text = highlightedCode
                     }
-                    break
                 }
             }
     }

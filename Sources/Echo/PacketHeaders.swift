@@ -35,10 +35,15 @@ struct PacketHTTPMethod: View {
             )
     }
     
-    private func statusCodeText(for packet: BagelRequestPacket) -> some View {
-        Text(verbatim: packet.requestInfo.statusCode)
-            .font(Font.system(size: 14, weight: .bold, design: .rounded))
-            .foregroundColor(.white)
+    @ViewBuilder
+    private func statusCodeText(for packet: BagelRequestPacket?) -> some View {
+        if let p = packet, let request = p.requestInfo, let statusCode = request.statusCode {
+            Text(verbatim: statusCode)
+                .font(Font.system(size: 14, weight: .bold, design: .rounded))
+                .foregroundColor(.white)
+        } else {
+            Text("No packet")
+        }
     }
 }
 

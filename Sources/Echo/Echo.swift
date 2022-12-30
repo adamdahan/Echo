@@ -81,7 +81,7 @@ public class Echo: ObservableObject {
     }
     
     public class func showBanner() {
-        let button = UIButton(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 40))
+        let button = UIButton(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 100))
         button.backgroundColor = .systemPink
         button.addTarget(self, action: #selector(show), for: .touchUpInside)
         UIApplication.keyWindow?.rootViewController?.view.addSubview(button)
