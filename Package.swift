@@ -15,12 +15,14 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/adamdahan/EchoHTTP.git", .branch("master")),
+        //.package(path: "../EchoHttp"),
         .package(url: "https://github.com/RobertoMachorro/Highlightr.git", .branch("master"))
     ],
     targets: [
         .target(
             name: "Echo",
             dependencies: ["EchoHTTP", "Highlightr"]
+            // dependencies: [.product(name: "EchoHTTP", package: "EchoHTTP"), "Highlightr"]
         )
     ]
 )
@@ -36,6 +38,7 @@ let package = Package(
 //    products: [
 //        .library(name: "Echo", targets: ["Echo"])
 //    ],
+
 //    dependencies: [
 //        .package(
 //            path: "../EchoHTTP"

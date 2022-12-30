@@ -24,21 +24,8 @@ public class Echo: ObservableObject {
     
     // MARK: - Observing
         
-    @ObservedObject public var carrierDelegate = Delegate()
+    @ObservedObject public var atlantisDelegate = EchoAtlantisDelegate()
 
-    // MARK: - Lazily loaded
-    
-    private lazy var floatingButton: FloatingView = {
-        let normalButton:UIButton = UIButton(type: UIButton.ButtonType.system)
-        normalButton.backgroundColor = .red
-        normalButton.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
-        normalButton.layer.cornerRadius = 50
-        normalButton.addTarget(self, action: #selector(Echo.show), for: .touchUpInside)
-        var floatingView = FloatingView(with: normalButton)
-        floatingView.delegate = self
-        return floatingView
-    }()
-    
     // MARK: - Class methods
         
     public class func start() {
@@ -50,6 +37,8 @@ public class Echo: ObservableObject {
         /// Setup the Echo logs directory
         
         Echo.main.fileProvider.bootstrap()
+
+        Echo.showBanner()
     }
     
     // MARK: - Showing Echo
@@ -81,18 +70,21 @@ public class Echo: ObservableObject {
     }
     
     public class func showBanner() {
-        let button = UIButton(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 40))
-        button.backgroundColor = .systemPink
+        let button = UIButton(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 100))
+        button.backgroundColor = .black
+        button.setTitle("Tap to open App Inspector", for: .normal)
+        button.setTitleColor(UIColor.systemGreen, for: .normal)
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
         button.addTarget(self, action: #selector(show), for: .touchUpInside)
+        button.titleEdgeInsets = UIEdgeInsets(top: 30, left: 0, bottom: 0, right: 0)
         UIApplication.keyWindow?.rootViewController?.view.addSubview(button)
     }
 
     // MARK: - Private Setup
     
     private func setupEchoHTTP() {
-        let configuration = BagelConfiguration()
-        configuration.carrierDelegate = Echo.main.carrierDelegate;
-        Bagel.start(configuration)
+        Atlantis.start()
+        Atlantis.setDelegate(Echo.main.atlantisDelegate)
     }
 }
 

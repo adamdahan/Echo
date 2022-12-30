@@ -16,7 +16,7 @@ enum DataType {
 struct JSONView: View {
     
     let type: DataType
-    let packet: BagelRequestPacket
+    let package: EchoHTTP.TrafficPackage
     
     private let highlightr = Highlightr()
     
@@ -35,7 +35,7 @@ struct JSONView: View {
                 case .requestHeaders:
                     
                     let prettyJsonData = try? JSONSerialization.data(
-                        withJSONObject: packet.requestInfo.requestHeaders ?? Data(),
+                        withJSONObject: package.request.headers,
                         options: .prettyPrinted
                     )
                     
@@ -45,40 +45,40 @@ struct JSONView: View {
                     // You can omit the second parameter to use automatic language detection.
                     let highlightedCode = highlightr?.highlight(jsonString, as: "json") ?? NSAttributedString(string: "")
                     self.text = highlightedCode
-                    break
                     
                 case .responseHeaders:
                     
-                    let prettyJsonData = try? JSONSerialization.data(
-                        withJSONObject: packet.requestInfo.responseHeaders ?? Data(),
-                        options: .prettyPrinted
-                    )
+                    guard let responseHeaders = package.response?.headers else  {
+                        return
+                    }
                     
-                    
-                    jsonString = String(data: prettyJsonData ?? Data(), encoding: .utf8)!
-                    
-                    // You can omit the second parameter to use automatic language detection.
-                    let highlightedCode = highlightr?.highlight(jsonString, as: "json") ?? NSAttributedString(string: "")
-                    self.text = highlightedCode
-                    break
-                case .response:
-                    if let d = packet.requestInfo.responseData {
-                        
-                        //2. convert JSON data to JSON object
-                        let json = try? JSONSerialization.jsonObject(with: d, options: [])
-                        
-                        guard let j = json else { return }
-                        
-                        let prettyJsonData = try? JSONSerialization.data(withJSONObject: j, options: .prettyPrinted)
-                        
-                        //4. convert NSData back to NSString (use NSString init for convenience), later you can convert to String.
-                        jsonString = String(data: prettyJsonData ?? Data(), encoding: .utf8)!
+                    do {
+                        var data = try JSONEncoder().encode(responseHeaders)
+                        var dataString: String { return String(data: data, encoding: .utf8)! }
+                        print(dataString)
+                        jsonString = dataString
                         
                         // You can omit the second parameter to use automatic language detection.
                         let highlightedCode = highlightr?.highlight(jsonString, as: "json") ?? NSAttributedString(string: "")
                         self.text = highlightedCode
+                    } catch {
+                        print(error.localizedDescription)
                     }
-                    break
+
+                case .response:
+                    
+                    let json = try? JSONSerialization.jsonObject(with: package.responseBodyData, options: [])
+                    
+                    guard let j = json else { return }
+                    
+                    let prettyJsonData = try? JSONSerialization.data(withJSONObject: j, options: .prettyPrinted)
+                    
+                    //4. convert NSData back to NSString (use NSString init for convenience), later you can convert to String.
+                    jsonString = String(data: prettyJsonData ?? Data(), encoding: .utf8)!
+                    
+                    // You can omit the second parameter to use automatic language detection.
+                    let highlightedCode = highlightr?.highlight(jsonString, as: "json") ?? NSAttributedString(string: "")
+                    self.text = highlightedCode
                 }
             }
     }
@@ -333,4 +333,5 @@ struct SearchBar: View {
     }
     
 }
+
 

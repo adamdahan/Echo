@@ -8,43 +8,44 @@
 import SwiftUI
 import EchoHTTP
 
-struct PacketHTTPMethod: View {
+struct PackageHTTPMethod: View {
     
-    let packet: BagelRequestPacket
+    let package: EchoHTTP.TrafficPackage
     
     var body: some View {
         HStack {
             VStack(alignment: .leading, spacing: 5, content: {
-                Text("🚀 [\(packet.requestInfo.requestMethod)]")
+                Text("🚀 [\(String(describing: package.request.method))]")
                     .font(.headline)
-                Text("\(packet.requestInfo.url)")
+                Text("\(package.request.url)")
                     .font(.subheadline)
                     .foregroundColor(.gray)
             })
             Spacer()
-            statusCode(for: packet)
+            statusCode(for: package)
         }
     }
     
-    private func statusCode(for packet: BagelRequestPacket) -> some View {
+    private func statusCode(for package: EchoHTTP.TrafficPackage) -> some View {
         RoundedRectangle(cornerRadius: 4)
-            .fill(Color(packet.statusColor))
+            .fill(Color(package.statusColor))
             .frame(width: 40, alignment: .leading)
             .overlay(
-                statusCodeText(for: packet)
+                statusCodeText(for: package)
             )
     }
     
-    private func statusCodeText(for packet: BagelRequestPacket) -> some View {
-        Text(verbatim: packet.requestInfo.statusCode)
+    @ViewBuilder
+    private func statusCodeText(for package: EchoHTTP.TrafficPackage) -> some View {
+        Text(verbatim: "\(package.response?.statusCode ?? 9)")
             .font(Font.system(size: 14, weight: .bold, design: .rounded))
             .foregroundColor(.white)
     }
 }
 
-struct PacketBody: View {
+struct PackageBody: View {
     
-    let packet: BagelRequestPacket
+    let package: EchoHTTP.TrafficPackage
     
     var body: some View {
         VStack(alignment: .leading, spacing: /*@START_MENU_TOKEN@*/nil/*@END_MENU_TOKEN@*/, content: {
@@ -59,7 +60,7 @@ struct PacketBody: View {
         
         //2. convert JSON data to JSON object
         let json = try? JSONSerialization.jsonObject(
-            with: packet.requestInfo.requestBody ?? Data(),
+            with: package.responseBodyData,
             options: []
         )
         
@@ -73,42 +74,42 @@ struct PacketBody: View {
     }
 }
 
-struct PacketURL: View {
+struct PackageURL: View {
     
-    let packet: BagelRequestPacket
+    let package: EchoHTTP.TrafficPackage
     
     var body: some View {
         VStack(alignment: .leading, spacing: /*@START_MENU_TOKEN@*/nil/*@END_MENU_TOKEN@*/, content: {
             Text("URL")
-            Text(packet.requestInfo.url.absoluteString)
+            Text(package.request.url)
                 .font(.caption)
                 .foregroundColor(.gray)
         })
     }
 }
 
-struct PacketDates: View {
+struct PackageDates: View {
     
-    let packet: BagelRequestPacket
+    let package: EchoHTTP.TrafficPackage
     
     var body: some View {
         VStack(alignment: .leading, spacing: 5, content: {
             Text("🕙 Start")
                 .font(.headline)
-            Text("\(packet.requestInfo.startDate)")
+            Text("\(Date())")
                 .font(.subheadline)
                 .foregroundColor(.gray)
             Divider()
             Text("🕝 Ended")
                 .font(.headline)
-            Text("\(packet.requestInfo.endDate)")
+            Text("\(Date())")
                 .font(.subheadline)
                 .foregroundColor(.gray)
             Divider()
             Text("🕝 Total Time")
                 .font(.headline)
             
-            if let interval = packet.requestInfo.endDate.timeIntervalSince(packet.requestInfo.startDate) {
+            if let interval = Date().timeIntervalSince(Date()) {
                 Text("\(interval) seconds")
                     .font(.subheadline)
                     .foregroundColor(.gray)
@@ -118,57 +119,57 @@ struct PacketDates: View {
     }
 }
 
-struct PacketRequestHeaders: View {
+struct PackageRequestHeaders: View {
     
-    let packet: BagelRequestPacket
+    let package: EchoHTTP.TrafficPackage
     
     var body: some View {
         VStack(alignment: .leading, spacing: /*@START_MENU_TOKEN@*/nil/*@END_MENU_TOKEN@*/, content: {
             Text("🦄 Request Header")
                 .font(.headline)
-            JSONView(type: .requestHeaders, packet: packet)
+            JSONView(type: .requestHeaders, package: package)
         })
     }
 }
 
-struct PacketResponseHeaders: View {
+struct PackageResponseHeaders: View {
     
-    let packet: BagelRequestPacket
+    let package: EchoHTTP.TrafficPackage
     
     var body: some View {
         VStack(alignment: .leading, spacing: /*@START_MENU_TOKEN@*/nil/*@END_MENU_TOKEN@*/, content: {
             Text(" 🐤 Response Header")
-            JSONView(type: .responseHeaders, packet: packet)
+            JSONView(type: .responseHeaders, package: package)
         })
     }
 }
 
 
 
-struct PacketResponse: View {
+struct PackageResponse: View {
     
-    let packet: BagelRequestPacket
+    let package: EchoHTTP.TrafficPackage
     
     @State var jsonString = ""
     
     var body: some View {
         VStack(alignment: .leading, spacing: /*@START_MENU_TOKEN@*/nil/*@END_MENU_TOKEN@*/, content: {
             Text("🐥 Response Data")
-            JSONView(type: .response, packet: packet)
+            JSONView(type: .response, package: package)
         })
     }
 }
 
-struct PacketResponseSize: View {
+struct PackageResponseSize: View {
     
-    let packet: BagelRequestPacket
+    let package: EchoHTTP.TrafficPackage
     
     @State var jsonString = ""
     
     var body: some View {
         VStack(alignment: .leading, spacing: /*@START_MENU_TOKEN@*/nil/*@END_MENU_TOKEN@*/, content: {
             Text("📲 Response Size")
-            Text(packet.requestInfo.responseData.sizeString())
+            Text(package.responseBodyData.sizeString())
                 .font(.caption)
                 .foregroundColor(.gray)
         })

@@ -1,5 +1,5 @@
 //
-//  PacketView.swift
+//  PackageView.swift
 //  HTTP
 //
 //  Created by Adam Dahan on 2021-07-10.
@@ -8,25 +8,25 @@
 import SwiftUI
 import EchoHTTP
 
-struct PacketView: View {
+struct PackageView: View {
 
     let index: Int
-    let packet: BagelRequestPacket
+    let package: EchoHTTP.TrafficPackage
     
     var body: some View {
         GeometryReader { geometry in
             List {
                 Text("")
                     .frame(height: 20)
-                PacketHTTPMethod(packet: packet)
-                PacketDates(packet: packet)
-                PacketRequestHeaders(packet: packet)
-                PacketResponseHeaders(packet: packet)
-                if packet.requestInfo.requestMethod == "POST" {
-                    PacketBody(packet: packet)
+                PackageHTTPMethod(package: package)
+                PackageDates(package: package)
+                PackageRequestHeaders(package: package)
+                PackageResponseHeaders(package: package)
+                if package.request.method.lowercased() == "post" {
+                    PackageBody(package: package)
                 }
-                PacketResponse(packet: packet)
-                PacketResponseSize(packet: packet)
+                PackageResponse(package: package)
+                PackageResponseSize(package: package)
             }.padding([.top, .bottom], 10)
         }
         .navigationBarTitle("\(index)")

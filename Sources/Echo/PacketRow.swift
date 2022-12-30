@@ -1,5 +1,5 @@
 //
-//  PacketRow.swift
+//  packageRow.swift
 //  HTTP
 //
 //  Created by Adam Dahan on 2021-07-10.
@@ -8,13 +8,19 @@
 import SwiftUI
 import EchoHTTP
 
-struct PacketRow: View {
+struct PackageRow: View {
     
     let index: Int
-    let packet: BagelRequestPacket
+    let package: EchoHTTP.TrafficPackage
+    
+    init(index: Int, package: EchoHTTP.TrafficPackage) {
+        self.index = index
+        self.package = package
+        print("package JSON: \(String(describing: package.response?.headers))")
+    }
     
     var body: some View {
-        row(index: index, for: packet)
+        row(index: index, for: package)
     }
     
     // MARK: - TODO Make date formatter
@@ -25,57 +31,64 @@ struct PacketRow: View {
         return dateFormatter.string(from: date)
     }
     
-    private func text(index: Int, for packet: BagelRequestPacket) -> some View {
+    private func text(index: Int, for package: EchoHTTP.TrafficPackage) -> some View {
         Text("\(index)")
             .font(.headline)
             .padding(3)
     }
     
-    private func httpMethod(for packet: BagelRequestPacket) -> some View {
-        Text(verbatim: "[\(packet.requestInfo.requestMethod ?? "")]")
+    @ViewBuilder
+    private func httpMethod(for package: EchoHTTP.TrafficPackage) -> some View {
+        Text(verbatim: "[\(package.request.method)]")
             .font(.headline)
             .foregroundColor(Color.blue)
     }
     
-    private func date(for packet: BagelRequestPacket) -> some View {
-        Text(startDateString(date: packet.requestInfo.startDate))
+    @ViewBuilder
+    private func date(for package: EchoHTTP.TrafficPackage) -> some View {
+        Text(startDateString(date: Date()))
             .font(.headline)
             .foregroundColor(Color.primary)
     }
     
-    private func url(for packet: BagelRequestPacket) -> some View {
-        Text(packet.requestInfo.url.absoluteString)
+    @ViewBuilder
+    private func url(for package: EchoHTTP.TrafficPackage) -> some View {
+        Text(package.request.url)
             .font(.subheadline)
             .foregroundColor(Color.gray)
     }
     
-    private func statusCode(for packet: BagelRequestPacket) -> some View {
+    @ViewBuilder
+    private func statusCode(for package: EchoHTTP.TrafficPackage) -> some View {
         RoundedRectangle(cornerRadius: 4)
-            .fill(Color(packet.statusColor))
+            .fill(Color(package.statusColor))
             .frame(width: 40, alignment: .leading)
             .overlay(
-                statusCodeText(for: packet)
+                statusCodeText(for: package)
             )
     }
     
-    private func statusCodeText(for packet: BagelRequestPacket) -> some View {
-        Text(verbatim: packet.requestInfo.statusCode ?? "0")
+    @ViewBuilder
+    private func statusCodeText(for package: EchoHTTP.TrafficPackage) -> some View {
+        Text(verbatim: "\(package.response?.statusCode ?? 0)")
             .font(Font.system(size: 14, weight: .bold, design: .rounded))
             .foregroundColor(.white)
     }
     
-    private func row(index: Int, for packet: BagelRequestPacket) -> some View {
+    @ViewBuilder
+    private func row(index: Int, for package: EchoHTTP.TrafficPackage) -> some View {
         HStack {
             VStack(alignment: .leading, spacing: 5) {
                 HStack {
-                    httpMethod(for: packet)
-                    date(for: packet)
+                    httpMethod(for: package)
+                    date(for: package)
                 }
                 .font(.caption)
-                url(for: packet)
+                url(for: package)
             }
             Spacer()
-            statusCode(for: packet)
+            statusCode(for: package)
         }
     }
 }
+

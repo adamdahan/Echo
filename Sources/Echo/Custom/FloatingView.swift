@@ -59,7 +59,7 @@ public class FloatingView {
         self.floatingView = view
         
 		self.appWindow = UIApplication.keyWindow
-		self.floatingWindow = FloatingWindow(frame: view.frame)
+        self.floatingWindow = FloatingWindow(frame: UIScreen.main.bounds)
         self.floatingWindow?.topView = view
         self.floatingWindow?.rootViewController?.view = view
         self.floatingWindow?.windowLevel = FloatingWindow.Level(layer)

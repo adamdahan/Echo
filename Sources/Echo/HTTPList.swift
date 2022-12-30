@@ -8,38 +8,21 @@
 import SwiftUI
 import EchoHTTP
 
-public class Delegate: NSObject, BagelCarrierDelegate, ObservableObject {
-    
-    @Published var packets: [BagelRequestPacket] = []
-    
-    public func bagelCarrierWillSendRequest(_ request: BagelRequestPacket) -> BagelRequestPacket? {
-        if request.requestInfo.responseData != nil {
-            DispatchQueue.main.async {
-                self.packets.append(request)
-            }
-        }
-        return request
-    }
-}
-
-// Testing
-
-
 @available(iOS 14.0, *)
 struct HTTPList: View {
 
     // MARK: - ObservedObject
     
-    @ObservedObject var delegate = Echo.main.carrierDelegate;
+    @ObservedObject var delegate = Echo.main.atlantisDelegate
                 
     @State private var showingSheet = false
 
     // MARK: - Body
     
     var body: some View {
-        List(delegate.packets, id: \.self) { packet in
-            NavigationLink(destination: PacketView(index: 0, packet: packet)) {
-                PacketRow(index: 0, packet: packet)
+        List(delegate.packages, id: \.self) { package in
+            NavigationLink(destination: PackageView(index: 0, package: package)) {
+                PackageRow(index: 0, package: package)
             }
         }
         .listStyle(PlainListStyle())
