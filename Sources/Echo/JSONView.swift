@@ -17,7 +17,7 @@ struct JSONView: View {
     
     let type: DataType
     let package: EchoHTTP.TrafficPackage
-    
+
     private let highlightr = Highlightr()
     
     @State var text: NSAttributedString = NSAttributedString(string: "")
@@ -34,6 +34,10 @@ struct JSONView: View {
                 switch type {
                 case .requestHeaders:
                     
+                    guard let p = packet, let requestInfo = p.requestInfo else  {
+                        return
+                    }
+                    
                     let prettyJsonData = try? JSONSerialization.data(
                         withJSONObject: package.request.headers,
                         options: .prettyPrinted
@@ -47,7 +51,7 @@ struct JSONView: View {
                     self.text = highlightedCode
                     
                 case .responseHeaders:
-                    
+
                     guard let responseHeaders = package.response?.headers else  {
                         return
                     }
@@ -79,6 +83,7 @@ struct JSONView: View {
                     // You can omit the second parameter to use automatic language detection.
                     let highlightedCode = highlightr?.highlight(jsonString, as: "json") ?? NSAttributedString(string: "")
                     self.text = highlightedCode
+
                 }
             }
     }
