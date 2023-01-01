@@ -33,22 +33,23 @@ struct JSONView: View {
                 
                 switch type {
                 case .requestHeaders:
-                    
-                    guard let p = packet, let requestInfo = p.requestInfo else  {
+                
+                    guard let responseHeaders = package.response?.headers else  {
                         return
                     }
                     
-                    let prettyJsonData = try? JSONSerialization.data(
-                        withJSONObject: package.request.headers,
-                        options: .prettyPrinted
-                    )
-                    
-                    
-                    jsonString = String(data: prettyJsonData ?? Data(), encoding: .utf8)!
-                    
-                    // You can omit the second parameter to use automatic language detection.
-                    let highlightedCode = highlightr?.highlight(jsonString, as: "json") ?? NSAttributedString(string: "")
-                    self.text = highlightedCode
+                    do {
+                        var data = try JSONEncoder().encode(responseHeaders)
+                        var dataString: String { return String(data: data, encoding: .utf8)! }
+                        print(dataString)
+                        jsonString = dataString
+                        
+                        // You can omit the second parameter to use automatic language detection.
+                        let highlightedCode = highlightr?.highlight(jsonString, as: "json") ?? NSAttributedString(string: "")
+                        self.text = highlightedCode
+                    } catch {
+                        print(error.localizedDescription)
+                    }
                     
                 case .responseHeaders:
 
