@@ -8,27 +8,6 @@
 import UIKit
 import EchoHTTP
 
-struct BagelRequestMethod {
-    var type: String
-}
-
-struct BagelRequestInfo {
-    var statusCode: Int? = 0
-    var requestMethod: BagelRequestMethod
-    var requestHeaders: [String: Any]?
-    var responseHeaders: [String: Any]?
-    var requestBody: Data?
-    var responseData: Data
-    var url: URL
-    var startDate: Date
-    var endDate: Date
-}
-
-struct BagelRequestPacket: Identifiable {
-    var id = UUID().uuidString
-    var requestInfo: BagelRequestInfo
-}
-
 extension EchoHTTP.TrafficPackage {
     
     var statusColor: UIColor {
