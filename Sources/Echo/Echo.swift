@@ -37,8 +37,6 @@ public class Echo: ObservableObject {
         /// Setup the Echo logs directory
         
         Echo.main.fileProvider.bootstrap()
-
-        Echo.showBanner()
     }
     
     // MARK: - Showing Echo

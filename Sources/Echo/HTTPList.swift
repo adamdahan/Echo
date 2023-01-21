@@ -27,6 +27,14 @@ struct HTTPList: View {
         }
         .listStyle(PlainListStyle())
         .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button(action: {
+                    delegate.packages = []
+                }) {
+                    Image(systemName: "trash")
+                        .imageScale(.large)
+                }
+            }
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button(action: {
                     self.showingSheet = true

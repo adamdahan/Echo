@@ -39,7 +39,7 @@ struct JSONView: View {
                     }
                     
                     do {
-                        var data = try JSONEncoder().encode(responseHeaders)
+                        let data = try JSONEncoder().encode(responseHeaders)
                         var dataString: String { return String(data: data, encoding: .utf8)! }
                         print(dataString)
                         jsonString = dataString
@@ -58,7 +58,7 @@ struct JSONView: View {
                     }
                     
                     do {
-                        var data = try JSONEncoder().encode(responseHeaders)
+                        let data = try JSONEncoder().encode(responseHeaders)
                         var dataString: String { return String(data: data, encoding: .utf8)! }
                         print(dataString)
                         jsonString = dataString
