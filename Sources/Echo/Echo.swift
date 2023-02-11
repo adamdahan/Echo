@@ -68,13 +68,18 @@ public class Echo: ObservableObject {
     }
     
     public class func showBanner() {
-        let button = UIButton(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 100))
-        button.backgroundColor = .black
-        button.setTitle("Tap to open App Inspector", for: .normal)
-        button.setTitleColor(UIColor.systemGreen, for: .normal)
-        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
+        
+        let image = EchoImage(named: "spy")
+        let imageView = UIImageView(image: image)
+        imageView.tintColor = .systemGreen
+        imageView.contentMode = .scaleAspectFit
+        
+        let button = ShadowButton(frame: CGRect(x: 20, y: 60, width: 60, height: 60))
+        button.setImage(image, for: .normal)
+        button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        button.tag = 19880901
+        
         button.addTarget(self, action: #selector(show), for: .touchUpInside)
-        button.titleEdgeInsets = UIEdgeInsets(top: 30, left: 0, bottom: 0, right: 0)
         UIApplication.keyWindow?.rootViewController?.view.addSubview(button)
     }
 

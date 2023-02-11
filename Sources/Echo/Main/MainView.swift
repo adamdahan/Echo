@@ -17,6 +17,12 @@ public struct MainView: View {
     public var body: some View {
         TabView {
             NavigationView {
+                HTTPList()
+            }
+            .tabItem {
+                Label("🌎 Network", systemImage: "network")
+            }
+            NavigationView {
                 LogsView()
             }
             .environment(
@@ -34,12 +40,6 @@ public struct MainView: View {
             }
             .tabItem {
                 Label("🏖 App Sandbox", systemImage: "app")
-            }
-            NavigationView {
-                HTTPList()
-            }
-            .tabItem {
-                Label("🌎 Network", systemImage: "network")
             }
             NavigationView {
                 UserDefaultsPayloadView()
