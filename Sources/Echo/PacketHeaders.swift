@@ -37,7 +37,7 @@ struct PackageHTTPMethod: View {
     
     @ViewBuilder
     private func statusCodeText(for package: EchoHTTP.TrafficPackage) -> some View {
-        Text(verbatim: "\(package.response?.statusCode ?? 9)")
+        Text(verbatim: "\(package.response?.statusCode ?? 0)")
             .font(Font.system(size: 14, weight: .bold, design: .rounded))
             .foregroundColor(.white)
     }
