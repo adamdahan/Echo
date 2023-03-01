@@ -12,6 +12,8 @@ import EchoHTTP
 @available(iOS 14.0, *)
 public class Echo: ObservableObject {
     
+    public var disableInRelease: Bool = true
+    
     // MARK: - Singleton
     
     public static let main = Echo()
@@ -30,6 +32,10 @@ public class Echo: ObservableObject {
         
     public class func start() {
         
+        if Echo.main.disableInRelease {
+            return
+        }
+        
         /// Setup the http injector
                 
         Echo.main.setupEchoHTTP()
@@ -45,6 +51,10 @@ public class Echo: ObservableObject {
     //
     
     @objc public class func show() {
+        
+        if Echo.main.disableInRelease {
+            return
+        }
     
         /// Get the keywindow from the connectedScenes whose activation state is in the foreground
         
@@ -69,6 +79,10 @@ public class Echo: ObservableObject {
     
     public class func showBanner() {
         
+        if Echo.main.disableInRelease {
+            return
+        }
+        
         let image = EchoImage(named: "spy")
         let imageView = UIImageView(image: image)
         imageView.tintColor = .systemGreen
@@ -86,6 +100,11 @@ public class Echo: ObservableObject {
     // MARK: - Private Setup
     
     private func setupEchoHTTP() {
+        
+        if Echo.main.disableInRelease {
+            return
+        }
+        
         Atlantis.start()
         Atlantis.setDelegate(Echo.main.atlantisDelegate)
     }
