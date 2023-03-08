@@ -13,7 +13,7 @@ public final class Logger {
 
     /// Hide the initializer to prevent clients from instantiating this
     /// object directly.
-    private init() { }
+    init() { }
 
     /// Singleton dispatch
     static let main = Logger()

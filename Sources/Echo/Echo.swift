@@ -13,6 +13,7 @@ import EchoHTTP
 public class Echo: ObservableObject {
     
     public var disableInRelease: Bool = true
+    public var sessionUUID: UUID = UUID()
     
     // MARK: - Singleton
     
@@ -35,7 +36,7 @@ public class Echo: ObservableObject {
         if Echo.main.disableInRelease {
             return
         }
-        
+                
         /// Setup the http injector
                 
         Echo.main.setupEchoHTTP()

@@ -14,7 +14,6 @@ public struct SandboxList: View {
     private let urls: [URL]
     
     public init(urls: [URL]) {
-        print("Sandbox urls: \(urls)")
         self.urls = urls
     }
     
