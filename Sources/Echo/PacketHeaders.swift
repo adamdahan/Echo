@@ -109,12 +109,9 @@ struct PackageDates: View {
             Text("🕝 Total Time")
                 .font(.headline)
             
-            if let interval = Date().timeIntervalSince(Date()) {
-                Text("\(interval) seconds")
-                    .font(.subheadline)
-                    .foregroundColor(.gray)
-
-            }
+            Text("\(Date().timeIntervalSince(Date())) seconds")
+                .font(.subheadline)
+                .foregroundColor(.gray)
         })
     }
 }

@@ -53,34 +53,30 @@ public struct SandboxList: View {
                     }.padding()
                 )
             List(urls, id: \.self) { url in
-                
-                if let document = Document(url: url) {
-                    
-                    if document.isDirectory {
-                        NavigationLink(destination:
-                            SandboxList(urls: document.listContents)
-                                        .listStyle(PlainListStyle())
-                        ) {
-                            HStack {
-                                DocumentThumbnailView(document: document)
-                                Text(document.name)
-                                Spacer()
-                            }
-                        }
-                    } else {
+                if Document(url: url).isDirectory {
+                    NavigationLink(destination:
+                        SandboxList(urls: Document(url: url).listContents)
+                                    .listStyle(PlainListStyle())
+                    ) {
                         HStack {
-                            DocumentThumbnailView(document: document)
-                            Text(document.name)
+                            DocumentThumbnailView(document: Document(url: url))
+                            Text(Document(url: url).name)
                             Spacer()
-                        }.onTapGesture {
-                            if document.name.contains("txt") {
-                                do {
-                                    self.textFromSelectedDocumentTextFile = try String(contentsOfFile: document.url.path)
-                                    print(self.textFromSelectedDocumentTextFile)
-                                    self.showingSheet.toggle()
-                                } catch {
-                                    print(error.localizedDescription)
-                                }
+                        }
+                    }
+                } else {
+                    HStack {
+                        DocumentThumbnailView(document: Document(url: url))
+                        Text(Document(url: url).name)
+                        Spacer()
+                    }.onTapGesture {
+                        if Document(url: url).name.contains("txt") {
+                            do {
+                                self.textFromSelectedDocumentTextFile = try String(contentsOfFile: Document(url: url).url.path)
+                                print(self.textFromSelectedDocumentTextFile)
+                                self.showingSheet.toggle()
+                            } catch {
+                                print(error.localizedDescription)
                             }
                         }
                     }
